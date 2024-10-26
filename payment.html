@@ -64,7 +64,7 @@
     button:hover {
       background-color: #ccc;
     }
-    .online-payment-fields {
+    .online-payment-fields, .cod-address-fields {
       display: none;
     }
   </style>
@@ -116,6 +116,31 @@
           </div>
         </div>
         
+        <!-- COD Address Fields (Only show if 'cod' is selected) -->
+        <div class="cod-address-fields" id="codAddressFields">
+          <h3>Delivery Address for Cash on Delivery</h3>
+          <div>
+            <label for="delivery-address">Address:</label>
+            <input type="text" id="delivery-address" required>
+          </div>
+          <div>
+            <label for="delivery-city">City:</label>
+            <input type="text" id="delivery-city" required>
+          </div>
+          <div>
+            <label for="delivery-state">State:</label>
+            <input type="text" id="delivery-state" required>
+          </div>
+          <div>
+            <label for="delivery-pin">Pin-Code:</label>
+            <input type="text" id="delivery-pin" required>
+          </div>
+          <div>
+            <label for="delivery-country">Country:</label>
+            <input type="text" id="delivery-country" required>
+          </div>
+        </div>
+
         <button type="button" onclick="submitPayment()">Proceed with Payment</button>
       </form>
     </section>
@@ -125,11 +150,17 @@
     function handlePaymentSelection() {
       const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
       const onlineFields = document.getElementById('onlinePaymentFields');
+      const codFields = document.getElementById('codAddressFields');
       
       if (paymentMethod === "online") {
         onlineFields.style.display = "block";
+        codFields.style.display = "none";
+      } else if (paymentMethod === "cod") {
+        codFields.style.display = "block";
+        onlineFields.style.display = "none";
       } else {
         onlineFields.style.display = "none";
+        codFields.style.display = "none";
       }
     }
 
@@ -137,7 +168,7 @@
       const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
       
       if (paymentMethod === "cod") {
-        alert("You have selected Cash on Delivery. Your order will be processed.");
+        alert("Cash on Delivery selected. Your order will be processed and delivered to the specified address.");
       } else if (paymentMethod === "gpay") {
         window.location.href = "https://pay.google.com";
       } else if (paymentMethod === "phonepe") {
